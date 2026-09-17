@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -7,33 +7,30 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <main class="game-shell">
-      <header class="game-header">
-        <p class="eyebrow">MINESWEEPER</p>
-        <h1>지뢰찾기</h1>
-        <p class="subtitle">지뢰를 피해 모든 칸을 열어보세요.</p>
+    <main class="app">
+      <header class="top-bar">
+        <div class="difficulty-controls" aria-label="난이도 선택">
+          <button class="difficulty-btn active" data-difficulty="easy" type="button">초급</button>
+          <button class="difficulty-btn" data-difficulty="medium" type="button">중급</button>
+          <button class="difficulty-btn" data-difficulty="hard" type="button">고급</button>
+        </div>
+        <button id="restart-btn" class="restart-btn" type="button" aria-label="새 게임">🙂</button>
       </header>
 
-      <section class="game-card" aria-label="지뢰찾기 게임">
-        <div class="game-toolbar">
-          <div class="counter" aria-label="남은 지뢰">
-            <span class="counter-label">남은 지뢰</span>
-            <strong id="mine-count">10</strong>
-          </div>
-          <button id="reset-button" class="reset-button" type="button" aria-label="게임 다시 시작">
-            <span aria-hidden="true">🙂</span>
-          </button>
-          <div class="counter timer" aria-label="경과 시간">
-            <span class="counter-label">시간</span>
-            <strong id="timer">000</strong>
-          </div>
+      <div class="hud" aria-label="게임 상태">
+        <div class="hud-box">
+          <span class="hud-label">지뢰</span>
+          <span id="mine-count" class="hud-value">010</span>
         </div>
+        <div class="hud-box">
+          <span class="hud-label">시간</span>
+          <span id="timer" class="hud-value">000</span>
+        </div>
+      </div>
 
-        <p id="status" class="status" role="status">안전한 칸을 찾아 시작하세요.</p>
-        <div id="board" class="board" role="grid" aria-label="9x9 지뢰찾기 격자"></div>
-        <p class="hint">좌클릭: 열기 &nbsp;·&nbsp; 우클릭: 깃발</p>
-      </section>
+      <div id="board" class="board" aria-label="지뢰찾기 게임 보드"></div>
     </main>
+
     <script src="script.js"></script>
   </body>
 </html>
