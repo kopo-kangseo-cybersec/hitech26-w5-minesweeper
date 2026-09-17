@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>지뢰찾기 - Classic Minesweeper</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="game-shell">
+    <header class="title-bar">
+      <h1>지뢰찾기</h1>
+      <span aria-hidden="true">◆</span>
+    </header>
+
+    <section class="game-panel" aria-label="지뢰찾기 게임">
+      <div class="toolbar">
+        <label for="difficulty">난이도</label>
+        <select id="difficulty">
+          <option value="beginner">초급 · 9 x 9 · 10 mines</option>
+          <option value="intermediate">중급 · 16 x 16 · 40 mines</option>
+          <option value="expert">고급 · 30 x 16 · 99 mines</option>
+        </select>
+      </div>
+
+      <div class="scoreboard" aria-label="게임 정보">
+        <div class="counter-group">
+          <span class="counter-label">MINES</span>
+          <output id="mine-counter" class="led-counter" aria-label="남은 지뢰 수">010</output>
+        </div>
+        <button id="reset-button" class="reset-button" type="button" aria-label="현재 난이도로 다시 시작">🙂</button>
+        <div class="counter-group counter-group--right">
+          <span class="counter-label">TIME</span>
+          <output id="timer" class="led-counter" aria-label="경과 시간">000</output>
+        </div>
+      </div>
+
+      <p id="status-message" class="status-message" role="status">첫 칸을 열어 게임을 시작하세요.</p>
+      <div class="board-frame">
+        <div id="board" class="board" role="grid" aria-label="지뢰찾기 보드"></div>
+      </div>
+      <p class="controls-hint">좌클릭: 열기 · 우클릭: 깃발 · 가운데 클릭: 코드</p>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
