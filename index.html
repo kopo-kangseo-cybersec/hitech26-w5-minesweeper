@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Minesweeper - 9x9</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>지뢰찾기</h1>
+      <div class="controls classic-controls">
+        <div class="counter" id="mines-counter"> <span id="mines-left">10</span> </div>
+        <div class="face-wrap">
+          <button id="reset" class="face">🙂</button>
+        </div>
+        <div class="counter" id="time-counter"> <span id="timer">0</span> </div>
+      </div>
+
+      <div class="difficulty">
+        <label for="difficulty">난이도:</label>
+        <select id="difficulty">
+          <option value="beginner">초급 (9×9, 10)</option>
+          <option value="intermediate">중급 (16×16, 40)</option>
+          <option value="expert">고급 (30×16, 99)</option>
+        </select>
+      </div>
+
+      <div id="board" class="board" aria-label="Minesweeper board"></div>
+
+      <div id="status" class="status" aria-live="polite"></div>
+      <p class="hint">좌클릭: 열기 · 우클릭: 깃발 (브라우저 메뉴 비활성화)</p>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
