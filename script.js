@@ -1,12 +1,18 @@
-const BOARD_SIZE = 9;
-const MINE_COUNT = 10;
+const DIFFICULTIES = {
+  low: { label: '하급', rows: 9, columns: 9, mines: 10 },
+  medium: { label: '중급', rows: 16, columns: 16, mines: 40 },
+  high: { label: '상급', rows: 16, columns: 30, mines: 99 },
+};
 
 const boardElement = document.querySelector('#board');
 const mineCountElement = document.querySelector('#mine-count');
 const timerElement = document.querySelector('#timer');
 const statusElement = document.querySelector('#status');
 const restartButton = document.querySelector('#restart-button');
+const confettiElement = document.querySelector('#confetti');
+const difficultyElement = document.querySelector('#difficulty');
 
+let difficulty = DIFFICULTIES.low;
 let cells = [];
 let flaggedCount = 0;
 let openedCount = 0;
@@ -15,8 +21,8 @@ let timerId = null;
 let gameState = 'ready';
 
 function createEmptyBoard() {
-  return Array.from({ length: BOARD_SIZE }, (_, row) =>
-    Array.from({ length: BOARD_SIZE }, (_, column) => ({
+  return Array.from({ length: difficulty.rows }, (_, row) =>
+    Array.from({ length: difficulty.columns }, (_, column) => ({
       row,
       column,
       isMine: false,
@@ -38,7 +44,7 @@ function getNeighbors(cell) {
       const row = cell.row + rowOffset;
       const column = cell.column + columnOffset;
 
-      if (row >= 0 && row < BOARD_SIZE && column >= 0 && column < BOARD_SIZE) {
+      if (row >= 0 && row < difficulty.rows && column >= 0 && column < difficulty.columns) {
         neighbors.push(cells[row][column]);
       }
     }
@@ -60,7 +66,7 @@ function placeMines(firstCell) {
     ];
   }
 
-  availableCells.slice(0, MINE_COUNT).forEach((cell) => {
+  availableCells.slice(0, difficulty.mines).forEach((cell) => {
     cell.isMine = true;
   });
 
@@ -70,7 +76,7 @@ function placeMines(firstCell) {
 }
 
 function updateCounter() {
-  mineCountElement.textContent = String(MINE_COUNT - flaggedCount).padStart(2, '0');
+  mineCountElement.textContent = String(difficulty.mines - flaggedCount).padStart(2, '0');
 }
 
 function updateTimer() {
@@ -91,6 +97,22 @@ function stopTimer() {
 
 function setStatus(message) {
   statusElement.textContent = message;
+}
+
+function celebrateWin() {
+  const colors = ['#ff0000', '#0000ff', '#008000', '#ffcc00', '#800080'];
+  confettiElement.replaceChildren();
+
+  for (let index = 0; index < 48; index += 1) {
+    const piece = document.createElement('span');
+    piece.className = 'confetti-piece';
+    piece.style.setProperty('--confetti-color', colors[index % colors.length]);
+    piece.style.setProperty('--confetti-delay', `${Math.random() * 0.45}s`);
+    piece.style.setProperty('--confetti-x', `${Math.random() * 100 - 50}vw`);
+    piece.style.setProperty('--confetti-y', `${Math.random() * 48 + 24}vh`);
+    piece.style.setProperty('--confetti-rotation', `${Math.random() * 1080 - 540}deg`);
+    confettiElement.append(piece);
+  }
 }
 
 function renderCell(cell) {
@@ -154,13 +176,14 @@ function revealMines(explodedCell) {
 }
 
 function checkWin() {
-  const safeCellCount = BOARD_SIZE * BOARD_SIZE - MINE_COUNT;
+  const safeCellCount = difficulty.rows * difficulty.columns - difficulty.mines;
 
   if (openedCount !== safeCellCount) return;
 
   gameState = 'over';
   stopTimer();
   setStatus('성공! 모든 안전한 칸을 찾았습니다.');
+  celebrateWin();
 
   cells.flat().forEach((cell) => {
     if (cell.isMine && !cell.isFlagged) {
@@ -202,7 +225,7 @@ function handleOpen(cell) {
 function handleFlag(cell) {
   if (gameState === 'over' || cell.isOpen) return;
 
-  if (!cell.isFlagged && flaggedCount >= MINE_COUNT) return;
+  if (!cell.isFlagged && flaggedCount >= difficulty.mines) return;
 
   cell.isFlagged = !cell.isFlagged;
   flaggedCount += cell.isFlagged ? 1 : -1;
@@ -214,14 +237,42 @@ function handleFlag(cell) {
   }
 }
 
+function handleChord(cell) {
+  if (gameState === 'over' || !cell.isOpen || cell.adjacentMines === 0) return;
+
+  const neighbors = getNeighbors(cell);
+  const adjacentFlagCount = neighbors.filter((neighbor) => neighbor.isFlagged).length;
+
+  if (adjacentFlagCount !== cell.adjacentMines) return;
+
+  neighbors.forEach((neighbor) => {
+    if (!neighbor.isOpen && !neighbor.isFlagged) {
+      handleOpen(neighbor);
+    }
+  });
+
+  checkWin();
+}
+
 function createCellElement(cell) {
   const element = document.createElement('button');
   element.className = 'cell';
   element.type = 'button';
   element.setAttribute('role', 'gridcell');
   element.addEventListener('click', () => handleOpen(cell));
+  element.addEventListener('mousedown', (event) => {
+    if (event.buttons === 3) {
+      event.preventDefault();
+      cell.chordHandled = true;
+      handleChord(cell);
+    }
+  });
   element.addEventListener('contextmenu', (event) => {
     event.preventDefault();
+    if (cell.chordHandled) {
+      cell.chordHandled = false;
+      return;
+    }
     handleFlag(cell);
   });
   cell.element = element;
@@ -231,11 +282,18 @@ function createCellElement(cell) {
 
 function resetGame() {
   stopTimer();
+  confettiElement.replaceChildren();
   cells = createEmptyBoard();
   flaggedCount = 0;
   openedCount = 0;
   elapsedSeconds = 0;
   gameState = 'ready';
+  boardElement.style.setProperty('--board-columns', difficulty.columns);
+  boardElement.style.setProperty('--board-rows', difficulty.rows);
+  boardElement.setAttribute(
+    'aria-label',
+    `${difficulty.rows} 곱하기 ${difficulty.columns} 지뢰찾기 보드`,
+  );
   boardElement.replaceChildren();
   cells.flat().forEach(createCellElement);
   updateCounter();
@@ -244,4 +302,8 @@ function resetGame() {
 }
 
 restartButton.addEventListener('click', resetGame);
+difficultyElement.addEventListener('change', () => {
+  difficulty = DIFFICULTIES[difficultyElement.value];
+  resetGame();
+});
 resetGame();

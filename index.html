@@ -16,6 +16,15 @@
       </header>
 
       <section class="game-panel" aria-label="지뢰찾기 게임">
+        <div class="confetti" id="confetti" aria-hidden="true"></div>
+        <div class="mode-row">
+          <label for="difficulty">난이도</label>
+          <select id="difficulty" aria-label="난이도 선택">
+            <option value="low">하급 · 9 × 9 · 10개</option>
+            <option value="medium">중급 · 16 × 16 · 40개</option>
+            <option value="high">상급 · 30 × 16 · 99개</option>
+          </select>
+        </div>
         <div class="game-toolbar">
           <div class="stat" aria-label="남은 지뢰 수">
             <span class="stat-label">남은 지뢰</span>
@@ -31,7 +40,9 @@
         </div>
 
         <p class="status" id="status" role="status" aria-live="polite">첫 칸을 열어 게임을 시작하세요.</p>
-        <div class="board" id="board" role="grid" aria-label="9 곱하기 9 지뢰찾기 보드"></div>
+        <div class="board-scroll">
+          <div class="board" id="board" role="grid" aria-label="9 곱하기 9 지뢰찾기 보드"></div>
+        </div>
         <p class="game-hint">좌클릭: 칸 열기 · 우클릭: 깃발</p>
       </section>
     </main>
