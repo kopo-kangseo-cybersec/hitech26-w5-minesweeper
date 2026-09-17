@@ -9,6 +9,7 @@ const mineCountElement = document.querySelector('#mine-count');
 const timerElement = document.querySelector('#timer');
 const statusElement = document.querySelector('#status');
 const restartButton = document.querySelector('#restart-button');
+const restartIconElement = restartButton.querySelector('span');
 const confettiElement = document.querySelector('#confetti');
 const difficultyElement = document.querySelector('#difficulty');
 
@@ -76,15 +77,24 @@ function placeMines(firstCell) {
 }
 
 function updateCounter() {
-  mineCountElement.textContent = String(difficulty.mines - flaggedCount).padStart(2, '0');
+  mineCountElement.textContent = String(difficulty.mines - flaggedCount).padStart(3, '0');
 }
 
 function updateTimer() {
   timerElement.textContent = String(elapsedSeconds).padStart(3, '0');
 }
 
+function setGameFace(face) {
+  restartIconElement.textContent = face;
+}
+
 function startTimer() {
   timerId = window.setInterval(() => {
+    if (elapsedSeconds >= 999) {
+      stopTimer();
+      return;
+    }
+
     elapsedSeconds += 1;
     updateTimer();
   }, 1000);
@@ -182,6 +192,7 @@ function checkWin() {
 
   gameState = 'over';
   stopTimer();
+  setGameFace('😎');
   setStatus('성공! 모든 안전한 칸을 찾았습니다.');
   celebrateWin();
 
@@ -214,6 +225,7 @@ function handleOpen(cell) {
     revealMines(cell);
     gameState = 'over';
     stopTimer();
+    setGameFace('😵');
     setStatus('지뢰를 밟았습니다. 다시 도전해보세요.');
     return;
   }
@@ -265,7 +277,13 @@ function createCellElement(cell) {
       event.preventDefault();
       cell.chordHandled = true;
       handleChord(cell);
+    } else if (event.button === 1) {
+      event.preventDefault();
+      handleChord(cell);
     }
+  });
+  element.addEventListener('auxclick', (event) => {
+    if (event.button === 1) event.preventDefault();
   });
   element.addEventListener('contextmenu', (event) => {
     event.preventDefault();
@@ -296,6 +314,7 @@ function resetGame() {
   );
   boardElement.replaceChildren();
   cells.flat().forEach(createCellElement);
+  setGameFace('😊');
   updateCounter();
   updateTimer();
   setStatus('첫 칸을 열어 게임을 시작하세요.');
