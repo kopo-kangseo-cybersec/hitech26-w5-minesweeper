@@ -1,0 +1,286 @@
+:root {
+  --bg-window: #c0c0c0;
+  --bg-desktop: #008080;
+  --panel-dark: #808080;
+  --panel-light: #ffffff;
+  --panel-shadow: #404040;
+  --panel-highlight: #dfdfdf;
+  --red-led: #ff3b30;
+  --cell-bg: #c0c0c0;
+  --cell-border-light: #ffffff;
+  --cell-border-dark: #808080;
+  --empty: #c0c0c0;
+  --mine: #d90f0f;
+  --flag: #d22b2b;
+  --text: #1d1d1d;
+  --shadow: rgba(0, 0, 0, 0.25);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-desktop);
+  font-family: 'Tahoma', 'Verdana', sans-serif;
+  color: var(--text);
+}
+
+button {
+  font: inherit;
+}
+
+.game-shell {
+  position: relative;
+  background: var(--bg-window);
+  border: 3px solid;
+  border-top-color: var(--panel-highlight);
+  border-left-color: var(--panel-highlight);
+  border-right-color: var(--panel-shadow);
+  border-bottom-color: var(--panel-shadow);
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.25);
+  padding: 8px;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #d6d6d6;
+  border: 2px solid;
+  border-top-color: var(--panel-light);
+  border-left-color: var(--panel-light);
+  border-right-color: var(--panel-shadow);
+  border-bottom-color: var(--panel-shadow);
+  padding: 2px 4px;
+  margin-bottom: 10px;
+}
+
+.menu-bar {
+  position: relative;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.menu-item {
+  position: relative;
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  border-color: var(--panel-highlight) var(--panel-shadow) var(--panel-shadow) var(--panel-highlight);
+}
+
+.menu-panel {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 4px);
+  display: none;
+  min-width: 140px;
+  background: var(--bg-window);
+  border: 2px solid;
+  border-top-color: var(--panel-shadow);
+  border-left-color: var(--panel-shadow);
+  border-right-color: var(--panel-light);
+  border-bottom-color: var(--panel-light);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.menu-panel.open {
+  display: block;
+}
+
+.menu-panel button {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 8px 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menu-panel button:hover {
+  background: #d0d0d0;
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: #bdbdbd;
+  border: 3px solid;
+  border-top-color: var(--panel-shadow);
+  border-left-color: var(--panel-shadow);
+  border-right-color: var(--panel-highlight);
+  border-bottom-color: var(--panel-highlight);
+  padding: 8px 10px;
+}
+
+.led {
+  min-width: 78px;
+  padding: 4px 6px;
+  background: #000;
+  color: var(--red-led);
+  border: 2px solid;
+  border-top-color: var(--panel-shadow);
+  border-left-color: var(--panel-shadow);
+  border-right-color: var(--panel-light);
+  border-bottom-color: var(--panel-light);
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-shadow: 0 0 5px rgba(255, 59, 48, 0.5);
+}
+
+.face-button {
+  width: 48px;
+  height: 48px;
+  border: 3px solid;
+  border-top-color: var(--panel-light);
+  border-left-color: var(--panel-light);
+  border-right-color: var(--panel-shadow);
+  border-bottom-color: var(--panel-shadow);
+  background: #d9d9d9;
+  font-size: 28px;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+.face-button.pressed {
+  border-top-color: var(--panel-shadow);
+  border-left-color: var(--panel-shadow);
+  border-right-color: var(--panel-light);
+  border-bottom-color: var(--panel-light);
+}
+
+.face-button.win {
+  background: #dff7d2;
+}
+
+.face-button.lose {
+  background: #f7d2d2;
+}
+
+.board-wrap {
+  margin-top: 12px;
+  padding: 6px;
+  background: var(--bg-window);
+  border: 3px solid;
+  border-top-color: var(--panel-shadow);
+  border-left-color: var(--panel-shadow);
+  border-right-color: var(--panel-light);
+  border-bottom-color: var(--panel-light);
+}
+
+.board {
+  display: grid;
+  gap: 0;
+  background: #bdbdbd;
+  border: 3px solid;
+  border-top-color: var(--panel-shadow);
+  border-left-color: var(--panel-shadow);
+  border-right-color: var(--panel-light);
+  border-bottom-color: var(--panel-light);
+  width: max-content;
+  padding: 2px;
+}
+
+.cell {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid;
+  border-top-color: var(--panel-light);
+  border-left-color: var(--panel-light);
+  border-right-color: var(--panel-shadow);
+  border-bottom-color: var(--panel-shadow);
+  background: var(--cell-bg);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+  user-select: none;
+  padding: 0;
+}
+
+.cell.revealed {
+  background: #d9d9d9;
+  border: 1px solid #7f7f7f;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+.cell.mine {
+  background: var(--mine);
+  color: #fff;
+  border: 1px solid #7d0505;
+}
+
+.cell.flagged {
+  color: var(--flag);
+}
+
+.cell.wrong-flag {
+  background: #e8e8e8;
+  color: #d11b1b;
+}
+
+.adjacent-1 { color: #0000ff; }
+.adjacent-2 { color: #008100; }
+.adjacent-3 { color: #ff0000; }
+.adjacent-4 { color: #000080; }
+.adjacent-5 { color: #800000; }
+.adjacent-6 { color: #008080; }
+.adjacent-7 { color: #000000; }
+.adjacent-8 { color: #808080; }
+
+.confetti-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -20px;
+  width: 10px;
+  height: 16px;
+  opacity: 0.9;
+  animation: confetti-fall 1.8s ease-out forwards;
+  transform: rotate(0deg);
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--x-shift), 420px, 0) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .game-shell {
+    transform: scale(0.92);
+  }
+}

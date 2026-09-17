@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minesweeper Retro</title>
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <div class="game-shell">
+      <div class="top-bar">
+        <div class="menu-bar">
+          <button class="menu-item" id="game-menu-button" type="button">Game</button>
+          <div class="menu-panel" id="game-menu">
+            <button type="button" data-difficulty="beginner">Beginner</button>
+            <button type="button" data-difficulty="intermediate">Intermediate</button>
+            <button type="button" data-difficulty="expert">Expert</button>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="status-row">
+        <div class="led" id="mine-count">010</div>
+        <button class="face-button" id="reset-button" type="button" aria-label="Restart game">😊</button>
+        <div class="led" id="timer">000</div>
+      </div>
+
+      <div class="board-wrap">
+        <div id="board" class="board" aria-label="Minesweeper board"></div>
+      </div>
+      <div id="confetti-layer" class="confetti-layer"></div>
+    </div>
+
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>
