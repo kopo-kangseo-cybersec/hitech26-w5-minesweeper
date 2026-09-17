@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>지뢰찾기</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="top-bar">
+        <div class="difficulty-controls" aria-label="난이도 선택">
+          <button class="difficulty-btn active" data-difficulty="easy" type="button">초급</button>
+          <button class="difficulty-btn" data-difficulty="medium" type="button">중급</button>
+          <button class="difficulty-btn" data-difficulty="hard" type="button">고급</button>
+        </div>
+        <button id="restart-btn" class="restart-btn" type="button" aria-label="새 게임">🙂</button>
+      </header>
+
+      <div class="hud" aria-label="게임 상태">
+        <div class="hud-box">
+          <span class="hud-label">지뢰</span>
+          <span id="mine-count" class="hud-value">010</span>
+        </div>
+        <div class="hud-box">
+          <span class="hud-label">시간</span>
+          <span id="timer" class="hud-value">000</span>
+        </div>
+      </div>
+
+      <div id="board" class="board" aria-label="지뢰찾기 게임 보드"></div>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
