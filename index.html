@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>지뢰찾기</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game-shell">
+    <div class="window-titlebar">
+      <span>💣 Minesweeper</span>
+      <div class="window-controls" aria-hidden="true"><span>_</span><span>□</span><span>×</span></div>
+    </div>
+    <nav class="menu-bar" aria-label="게임 메뉴">
+      <span>Game</span>
+      <span>Help</span>
+    </nav>
+    <header class="game-header">
+      <div>
+        <p class="eyebrow">CLASSIC WINDOWS EDITION</p>
+        <h1>Minesweeper</h1>
+      </div>
+      <div class="difficulty-control">
+        <span>난이도</span>
+        <div id="difficulty-buttons" class="difficulty-buttons" role="group" aria-label="난이도 선택">
+          <button class="difficulty-button active" type="button" data-difficulty="beginner" aria-pressed="true">초급</button>
+          <button class="difficulty-button" type="button" data-difficulty="intermediate" aria-pressed="false">중급</button>
+          <button class="difficulty-button" type="button" data-difficulty="expert" aria-pressed="false">고급</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="game-panel" aria-label="게임 정보">
+      <div class="counter-box">
+        <span class="counter-icon" aria-hidden="true">💣</span>
+        <span class="counter-label">남은 지뢰</span>
+        <strong id="mine-counter">010</strong>
+      </div>
+      <button id="restart-button" class="restart-button" type="button" aria-label="게임 재시작">😊</button>
+      <div class="counter-box timer-box">
+        <span class="counter-icon" aria-hidden="true">⏱</span>
+        <span class="counter-label">시간</span>
+        <strong id="timer">000</strong>
+      </div>
+    </section>
+
+    <p id="status-message" class="status-message" role="status">첫 칸을 열어 게임을 시작하세요.</p>
+
+    <section class="board-frame" aria-label="지뢰찾기 게임 보드">
+      <div id="game-board" class="game-board" role="grid" aria-label="지뢰찾기 보드"></div>
+    </section>
+
+    <footer class="game-help">
+      <span>좌클릭: 열기</span>
+      <span>우클릭: 깃발 / 물음표</span>
+      <span>숫자 칸: 주변 깃발이 맞으면 열기</span>
+    </footer>
+    <div id="celebration-layer" class="celebration-layer" aria-hidden="true"></div>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
