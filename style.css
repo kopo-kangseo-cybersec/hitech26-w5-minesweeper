@@ -205,7 +205,7 @@ button { font: inherit; }
 .cell[data-number="8"] { color: #69747a; }
 
 .celebration-layer {
-  position: absolute;
+  position: fixed;
   z-index: 5;
   inset: 0;
   overflow: hidden;
@@ -213,19 +213,18 @@ button { font: inherit; }
 }
 .confetti-piece {
   position: absolute;
-  top: -14px;
-  left: 50%;
   width: 7px;
   height: 12px;
   background: var(--confetti-color);
   box-shadow: 1px 1px 0 rgba(0, 0, 0, .2);
-  animation: confetti-fall 1100ms cubic-bezier(.2, .7, .35, 1) forwards;
+  animation: confetti-fall 2400ms cubic-bezier(.2, .7, .35, 1) forwards;
   animation-delay: var(--confetti-delay);
   transform: translateX(0) rotate(0deg);
 }
 @keyframes confetti-fall {
-  0% { opacity: 1; transform: translate3d(0, -14px, 0) rotate(0deg); }
-  100% { opacity: 0; transform: translate3d(var(--confetti-x), calc(100% + 20px), 0) rotate(var(--confetti-rotation)); }
+  0% { opacity: 1; transform: translate3d(-50%, 0, 0) rotate(0deg); }
+  45% { opacity: 1; transform: translate3d(var(--confetti-mid-x), -45vh, 0) rotate(0deg); }
+  100% { opacity: 0; transform: translate3d(var(--confetti-x), calc(100vh - var(--confetti-start-y) + 20px), 0) rotate(var(--confetti-rotation)); }
 }
 
 .game-help { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px 12px; margin: 6px 0 2px; color: var(--muted); font-size: .62rem; }

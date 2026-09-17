@@ -171,11 +171,18 @@
 
   function showCelebration() {
     const colors = ['#ff3b30', '#ffcc00', '#34c759', '#007aff', '#af52de', '#ff9500'];
+    const shellBounds = document.querySelector('.game-shell').getBoundingClientRect();
     const pieces = Array.from({ length: 44 }, (_, index) => {
       const piece = document.createElement('span');
+      const startsFromLeft = index % 2 === 0;
+      const confettiX = Math.round((startsFromLeft ? 1 : -1) * Math.random() * window.innerWidth * 0.9);
       piece.className = 'confetti-piece';
       piece.style.setProperty('--confetti-color', colors[index % colors.length]);
-      piece.style.setProperty('--confetti-x', `${Math.round((Math.random() - 0.5) * 620)}px`);
+      piece.style.left = `${startsFromLeft ? shellBounds.left : shellBounds.right}px`;
+      piece.style.top = `${shellBounds.bottom}px`;
+      piece.style.setProperty('--confetti-start-y', `${shellBounds.bottom}px`);
+      piece.style.setProperty('--confetti-x', `${confettiX}px`);
+      piece.style.setProperty('--confetti-mid-x', `${Math.round(confettiX * 0.45)}px`);
       piece.style.setProperty('--confetti-rotation', `${Math.round(Math.random() * 720 - 360)}deg`);
       piece.style.setProperty('--confetti-delay', `${Math.round(Math.random() * 220)}ms`);
       return piece;
